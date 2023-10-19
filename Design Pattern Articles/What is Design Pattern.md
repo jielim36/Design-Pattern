@@ -11,17 +11,17 @@ Make our project more *readability, scalability, maintainability, and reusabilit
 ---
 # Software design princles
 In software developing, to improve system's maintainability, reusability, scalability, and flexibility. Programmer may follow few(6) principles to develop a program,it can improve your project develop speed, and reduce the cost of develop and maintain.
-
 There are six principles of software design, we also called it ***SOLID***:
-- **S**ingle Responsibility Principle单一职责原则
-- **O**pen/Closed Principle开闭原则
-- **L**iskov Substitution Principle里氏替换原则
-- **I**nterface Segregation Principle接口隔离原则
-- **D**ependency Inversion Principle依赖倒置原则
+- **S**ingle Responsibility Principle 单一职责原则
+- [**O**pen/Closed Principle 开闭原则](#OCP_portal)
+- [**L**iskov Substitution Principle 里氏替换原则](#LSP_portal)
+- **I**nterface Segregation Principle 接口隔离原则
+- **D**ependency Inversion Principle 依赖倒置原则
 
-#### Open/Closed Principle(OCP)
+#### Open/Closed Principle (OCP) {#OCP_portal}
 Definition: Software entities (Class, module, functions) should be open for extension, and closed for modification.
 When software needs to change (for updates and maintenance), it is advisable to achieve the goals through extension rather than modifying the existing code. Therefore, we recommend building a framework through abstraction and implementing details through extensions. When our software requires updates, simply extend a new implementation class based on the requirements of the abstract class.
+
 ```java
 public abstract class AbstractTheme {
     public abstract void display();
@@ -88,7 +88,7 @@ Dark Theme
 ```
 In this case, when we want to create a new theme called `DarkTheme`, we directly implement the `abstractTheme` class, and we don't modify any existing code.
 
-#### Liskov Substitution Principle(LSP) 里氏代换原则
+#### Liskov Substitution Principle(LSP) 里氏代换原则 {#LSP_portal}
 LSP told us, **if you replace a superclass object with its subclass object,the program will not occur any errors. The reverse is not true, if the program accept a subclass object, its may not able to use the superclass object.** For example, if I like animal means I must like dog; If i love dog, it doesn't means I like animals, because I don't like cat, although it is a animal too.
 
 Child class can extend the functionality of the parent class, but can't change the original function of the parent class. In other words, when we inherit a class, try not to override the method of the parent class, we can only add the new method.

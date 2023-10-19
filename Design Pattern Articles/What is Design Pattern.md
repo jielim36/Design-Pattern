@@ -13,13 +13,8 @@ Make our project more *readability, scalability, maintainability, and reusabilit
 In software developing, to improve system's maintainability, reusability, scalability, and flexibility. Programmer may follow few(6) principles to develop a program,it can improve your project develop speed, and reduce the cost of develop and maintain.
 There are six principles of software design, we also called it ***SOLID***:
 - **S**ingle Responsibility Principle 单一职责原则
-<<<<<<< HEAD
 - <a href="#open-closed-principle-ocp">**O**pen/Closed Principle 开闭原则</a>
 - <a href="#liskov-substitution-principle-lsp">**L**iskov Substitution Principle 里氏替换原则</a>
-=======
-- [**O**pen/Closed Principle 开闭原则](#Open/Closed-Principle-(OCP))
-- [**L**iskov Substitution Principle 里氏替换原则](#LSP)
->>>>>>> 5d5609149f5062d8d44949d36fe8d0f1375cee69
 - **I**nterface Segregation Principle 接口隔离原则
 - **D**ependency Inversion Principle 依赖倒置原则
 

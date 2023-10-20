@@ -19,7 +19,70 @@ There are six principles of software design, we also called it ***SOLID***:
 - <a href="#dependency-inversion-principle-dip">**D**ependency Inversion Principle 依赖倒置原则</a>
 
 ## Single Responsibility Principle (SRP)
+Every class, module, or function in a program should have only one responsibilty.
 
+#### Case of violating SRP:
+```java
+public class Student {
+
+    private String username;
+    private String email;
+    private String password;
+
+    public void registerStudent(){
+        //code...
+    }
+
+    public void calculateStudentResults(){
+        //code...
+    }
+
+    public void sendEmail(){
+        //code...
+    }
+
+    //getter and setter
+
+}
+```
+In this case, `Student` class **violates** the Single Responsibility Principle. Because `Student` class has **three responsibilities** - register students, calculate result of students, and sending emails to students.
+
+#### Fixing this problem
+Now, we try to separate each responsibility into a specific responsibilty class.
+```java
+public class Student {
+
+    private String username;
+    private String email;
+    private String password;
+
+    //getter and setter
+
+}
+```
+```java
+public class StudentEmail {
+    public void sendEmail(){
+        //code...
+    }
+}
+
+```
+```java
+public class StudentRegister {
+    public void registerStudent(){
+        //code...
+    }
+}
+```
+```java
+public class StudentResult {
+    public void calculateStudentResults(){
+        //code...
+    }
+}
+```
+Now we've separated each reponsibility/functionality into a specific class. This would make your program easy to update and maintain. If you need to make changes to the email functionality, you can simply edit the code within the `StudentEmail` class without having to worry about other classes such as `StudentRegister`.
 
 <br>
 
@@ -100,7 +163,7 @@ LSP told us, **if you replace a superclass object with its subclass object,the p
 
 Child class can extend the functionality of the parent class, but can't change the original function of the parent class. In other words, when we inherit a class, try not to override the method of the parent class, we can only add the new method.
 
-**Example of violating LSP:**
+#### Example of violating LSP:
 ```java
 public class Rectangle {
 

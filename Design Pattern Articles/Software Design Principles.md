@@ -782,6 +782,7 @@ There are different types of cars such as petrol and electric cars, and they com
 **Inheritance Reuse:**
 
 ![InheritanceCarUML](https://www.panziye.com/wp-content/uploads/2022/05/2022053013555418.png)
+
 As you can see, if we want to create a new type of car called *Ligh-energy Car*, we need to add a new class called `LightEnergyCar` inherit from superclass `Car`, and create few classes such as `RedLightEnergyCar` and `WhiteLightEnergyCar` inherit from parent class `LightEnergyCar`. Moreover, if we add a new color, all type of car should add a new class for this color.
 
 <br>
@@ -789,6 +790,7 @@ As you can see, if we want to create a new type of car called *Ligh-energy Car*,
 **Composite Reuse:**
 
 ![CompositeCarUML](https://www.panziye.com/wp-content/uploads/2022/05/2022053013570569.png)
+
 You can observe that we have separated the Car and Color concepts. This separation makes it easy to introduce new car types and colors. For example, if you want to add a new car type, such as `LightEnergyCar`, you can simply insert it directly below the Car superclass without needing to create a new subclass such as `WhiteLightEnergyCar`. The process is the same for adding a new color.
 
 ---

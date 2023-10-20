@@ -93,6 +93,8 @@ Dark Theme
 ```
 In this case, when we want to create a new theme called `DarkTheme`, we directly implement the `abstractTheme` class, and we don't modify any existing code.
 
+<br>
+
 ## Liskov Substitution Principle (LSP)
 LSP told us, **if you replace a superclass object with its subclass object,the program will not occur any errors. The reverse is not true, if the program accept a subclass object, its may not able to use the superclass object.** For example, if I like animal means I must like dog; If i love dog, it doesn't means I like animals, because I don't like cat, although it is a animal too.
 
@@ -186,13 +188,13 @@ Height:20.0
 =============
 <Infinite loop...>
 ```
-In this case, I try to use the *resize()* method with *Rectangle Object* and its didn't occur any error, but when I use the *resize()* method with the *Square Object* (subclass of the Rectangle) occur the infinite loop problem. 
+In this case, I try to use the `resize()` method with *Rectangle Object* and its didn't occur any error, but when I use the `resize()` method with the *Square Object* (subclass of the Rectangle) occur the infinite loop problem. 
 
-So we got the conclusion: *resize()* method is only accept the Rectangle Object, subclass of the Rectangle class (Square Class) is not accept. Therefore, the **inheritance relationship between Rectangle and Square class violates Liskov Substitution Principle (LSP).** This is because the LSP needs to make sure that the methods available to the parent class are also available when switching to the child class.
+So we got the conclusion: `resize()` method is only accept the Rectangle Object, subclass of the Rectangle class (Square Class) is not accept. Therefore, the **inheritance relationship between Rectangle and Square class violates Liskov Substitution Principle (LSP).** This is because the LSP needs to make sure that the methods available to the parent class are also available when switching to the child class.
 <br>
 
 #### Fixing this problem
-Now, we refactor the relationship between Rectangle and Square. We try to create a interface called `Quadrilateral`, let Rectangle and Square Class implement Quadrilateral interface.
+Now, we refactor the relationship between Rectangle and Square. We try to create a interface called `Quadrilateral`, let `Rectangle` and `Square` Class implement `Quadrilateral` interface.
 
 ```java
 public interface Quadrilateral {
@@ -291,11 +293,126 @@ public class RectangleDemo {
 Now, we refer back the example above:
 > if I like animal means I must like dog; If i love dog, it doesn't means I like animals, because I don't like cat, although it is a animal too.
 
-In this case, if I using the **Quadrilateral** (Parameter of printInfo method) object, I can use **Square** (or Rectangle) to access it; If I using the **Rectangl**e (Parameter of the resize method) object, it is not allowed for the **Square** object.
+In this case, if I using the **Quadrilateral** (Parameter of printInfo method) object, I can use **Square** (or Rectangle) to access it; If I using the **Rectangle** (Parameter of the resize method) object, it is not allowed for the **Square** object.
 
 <br>
 
 ## Interface Segregation Principle (ISP)
+**Clients should not be *forced* to depend upon interfaces that they do not use.**
+
+Example:
+We create a safety door brand called `JieLimSafetyDoor`, and it has the functional of anti-theft, fireproof and waterproof.
+
+```java
+public interface SafetyDoor {
+    void antiTheft();
+    void fireProof();
+    void waterProof();
+}
+```
+```java
+public class JieLimSafetyDoor implements SafetyDoor{
+    @Override
+    public void antiTheft() {
+        System.out.println("Anti-Theft");
+    }
+
+    @Override
+    public void fireProof() {
+        System.out.println("Fireproof");
+    }
+
+    @Override
+    public void waterProof() {
+        System.out.println("Waterproof");
+    }
+}
+```
+```java
+public class Client {
+    public static void main(String[] args) {
+        JieLimSafetyDoor door = new JieLimSafetyDoor();
+        door.antiTheft();
+        door.fireProof();
+        door.waterProof();
+    }
+}
+```
+```
+Output:
+Anti-Theft
+Fireproof
+Waterproof
+```
+In this case, `JieLimSafetyDoor` class looks like very good. However,what would occur **if I add a new safety door brand that only contain anti-theft and waterproof functionality?**
+```java
+public class TommySafetyDoor implements SafetyDoor{
+    @Override
+    public void antiTheft() {
+        System.out.println("Anti-Theft");
+    }
+
+    @Override
+    public void fireProof() {
+        //None
+    }
+
+    @Override
+    public void waterProof() {
+        System.out.println("Waterproof");
+    }
+}
+```
+As you can see, the new brand, called `TommySafetyDoor`, implements the `SafetyDoor` interface and **forces** it to implement the `fireProof()` method even though it doesn't have this functionality.
+
+#### Solving the problem of enforced implementation methods
+We try to split the methods of the `SafetyDoor` interface (anti-Theft, fireproof and waterproof) into interfaces called `antiTheft`,`fireProof` and `waterProof`.
+```java
+public interface antiTheft {
+    void antiTheft();
+}
+```
+```java
+public interface fireProof {
+    void fireProof();
+}
+```
+```java
+public interface waterProof {
+    void waterProof();
+}
+```
+```java
+public class JieLimSafetyDoor implements antiTheft,fireProof,waterProof {
+    @Override
+    public void antiTheft() {
+        System.out.println("Anti-Theft");
+    }
+    @Override
+    public void fireProof() {
+        System.out.println("Fireproof");
+    }
+    @Override
+    public void waterProof() {
+        System.out.println("Waterproof");
+    }
+}
+```
+```java
+public class TommySafetyDoor implements antiTheft,waterProof {//implement the interfaces that you need
+    @Override
+    public void antiTheft() {
+        System.out.println("Anti-Theft");
+    }
+    @Override
+    public void waterProof() {
+        System.out.println("Waterproof");
+    }
+    //No need to implement the fireProof() method if don't use it.
+}
+```
+In this case, `JieLimSafetyDoor` and `TommySafetyDoor` implements the neccessary interfaces, so they don't have to force implement the method they don't need.
+
 
 <br>
 
@@ -401,6 +518,7 @@ Using Intel CPU...
 Using Kingston RAM...
 ```
 In this case, although the computer may initially appear to have no issues, but its scalability could be severely limited. This is because if we want to change the CPU to a different brand such as AMD, the computer may not accept to "plug in" because the CPU in this computer class is specific to a particular brand.
+
 *Computer class:*
 ```java
 //Component (specific brand)

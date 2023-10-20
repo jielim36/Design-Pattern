@@ -12,13 +12,18 @@ Make our project more *readability, scalability, maintainability, and reusabilit
 # Software design princles
 In software developing, to improve system's maintainability, reusability, scalability, and flexibility. Programmer may follow few(6) principles to develop a program,it can improve your project develop speed, and reduce the cost of develop and maintain.
 There are six principles of software design, we also called it ***SOLID***:
-- **S**ingle Responsibility Principle 单一职责原则
-- <a href="#open-closed-principle-ocp">**O**pen/Closed Principle 开闭原则</a>
+- <a href="#single-responsibility-principle-srp">**S**ingle Responsibility Principle 单一职责原则</a>
+- <a href="#openclosed-principle-ocp">**O**pen/Closed Principle 开闭原则</a>
 - <a href="#liskov-substitution-principle-lsp">**L**iskov Substitution Principle 里氏替换原则</a>
-- **I**nterface Segregation Principle 接口隔离原则
-- **D**ependency Inversion Principle 依赖倒置原则
+- <a href="#interface-segregation-principle-isp">**I**nterface Segregation Principle 接口隔离原则</a>
+- <a href="#dependency-inversion-principle-dip">**D**ependency Inversion Principle 依赖倒置原则</a>
 
-## Open-Closed Principle (OCP)
+## Single Responsibility Principle (SRP)
+
+
+<br>
+
+## Open/Closed Principle (OCP)
 Definition: Software entities (Class, module, functions) should be open for extension, and closed for modification.
 When software needs to change (for updates and maintenance), it is advisable to achieve the goals through extension rather than modifying the existing code. Therefore, we recommend building a framework through abstraction and implementing details through extensions. When our software requires updates, simply extend a new implementation class based on the requirements of the abstract class.
 
@@ -287,3 +292,188 @@ Now, we refer back the example above:
 > if I like animal means I must like dog; If i love dog, it doesn't means I like animals, because I don't like cat, although it is a animal too.
 
 In this case, if I using the **Quadrilateral** (Parameter of printInfo method) object, I can use **Square** (or Rectangle) to access it; If I using the **Rectangl**e (Parameter of the resize method) object, it is not allowed for the **Square** object.
+
+<br>
+
+## Interface Segregation Principle (ISP)
+
+<br>
+
+## Dependency Inversion Principle (DIP)
+Dependency Inversion Principle consists of two parts:
+- High-level Module should not depend on low-level module. Both should depend on abstractions.
+- Abstractions should not depend on details. Details should depend on abstractions.
+
+Example of build a computer:
+Now, I'm going to build a computer that consists of three component which are CPU, Hard Disk, and RAM. In this case, I have Intel and AMD options when I selecting a CPU.
+
+#### Case of violating DIP
+```java
+public class IntelCpu {
+    public void run(){
+        System.out.println("Using Intel CPU...");
+    }
+}
+
+```
+```java
+public class KingstonRam {
+    public void save(){
+        System.out.println("Using Kingston RAM...");
+    }
+}
+
+```
+```java
+public class WdHardDisk {
+    public void save(String data){
+        System.out.println("WD Hard disk saving data:" + data);
+    }
+    public String getData(){
+        System.out.println("Fetching data from WD hard disk...");
+        return "Hello WD!!";
+    }
+}
+```
+```java
+public class Computer {
+
+    //Component (specific brand)
+    private WdHardDisk hardDisk;
+    private IntelCpu cpu;
+    private KingstonRam ram;
+
+    public void computerStart(){
+        System.out.println("Computer is running...");
+        System.out.println("Data from hard disk is: " + hardDisk.getData());
+        cpu.run();
+        ram.save();
+    }
+
+    //getter/setter method
+    public WdHardDisk getHardDisk() {
+        return hardDisk;
+    }
+
+    public void setHardDisk(WdHardDisk hardDisk) {
+        this.hardDisk = hardDisk;
+    }
+
+    public IntelCpu getCpu() {
+        return cpu;
+    }
+
+    public void setCpu(IntelCpu cpu) {
+        this.cpu = cpu;
+    }
+
+    public KingstonRam getRam() {
+        return ram;
+    }
+
+    public void setRam(KingstonRam ram) {
+        this.ram = ram;
+    }
+}
+```
+```java
+public class ComputerDemo {
+    public static void main(String[] args) {
+        //Create component of computer (specific brand)
+        WdHardDisk hardDisk = new WdHardDisk();
+        IntelCpu cpu = new IntelCpu();
+        KingstonRam ram = new KingstonRam();
+
+        Computer computer = new Computer();
+        computer.setCpu(cpu);
+        computer.setRam(ram);
+        computer.setHardDisk(hardDisk);
+        computer.computerStart();
+    }
+}
+```
+```
+Output:
+Computer is running...
+Fetching data from WD hard disk...
+Data from hard disk is: Hello WD!!
+Using Intel CPU...
+Using Kingston RAM...
+```
+In this case, although the computer may initially appear to have no issues, but its scalability could be severely limited. This is because if we want to change the CPU to a different brand such as AMD, the computer may not accept to "plug in" because the CPU in this computer class is specific to a particular brand.
+*Computer class:*
+```java
+//Component (specific brand)
+private WdHardDisk hardDisk;
+private IntelCpu cpu;
+private KingstonRam ram;
+```
+
+#### Applying the Dependency Inversion Principle Correctly
+The solution to the above case is using **Interface** for each component. It will make **Computer class depend on the abstractions** (interface class of each component) instead of the implementation class (IntelCpu class)
+```java
+public interface Cpu {
+    void run();
+}
+```
+```java
+public class IntelCpu implements Cpu{
+    public void run(){
+        System.out.println("Using Intel CPU...");
+    }
+}
+```
+```java
+public class Computer {
+
+    //Using interface instead of an specific implementation class (IntelCpu class)
+    private HardDisk hardDisk;
+    private Cpu cpu;
+    private Ram ram;
+
+    public void computerStart(){
+        System.out.println("Computer is running...");
+        System.out.println("Data from hard disk is: " + hardDisk.getData());
+        cpu.run();
+        ram.save();
+    }
+    //getter and setter method
+}    
+```
+```java
+public class ComputerDemo {
+    public static void main(String[] args) {
+        //Polymorphism: InterfaceClass objName = new ImplementationClass();
+        HardDisk hardDisk = new WdHardDisk();
+        Cpu cpu = new IntelCpu();
+        Ram ram = new KingstonRam();
+
+        Computer computer = new Computer();
+        computer.setCpu(cpu);
+        computer.setRam(ram);
+        computer.setHardDisk(hardDisk);
+        computer.computerStart();
+
+        System.out.println("===============");
+
+        cpu = new AmdCpu();//Change to different brand
+        computer.setCpu(cpu);
+        computer.computerStart();
+    }
+}
+```
+```
+Output:
+Computer is running...
+Fetching data from WD hard disk...
+Data from hard disk is: Hello WD!!
+Using Intel CPU...
+Using Kingston RAM...
+===============
+Computer is running...
+Fetching data from WD hard disk...
+Data from hard disk is: Hello WD!!
+Using AMD CPU... //worked
+Using Kingston RAM...
+```
+In this case, the members of the Computer class is using **interface instead of a specific implementation class**. This allows the class to remain functional even when switching to a different brand of CPU.

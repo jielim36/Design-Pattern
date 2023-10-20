@@ -1,5 +1,4 @@
 # Software Design Princles
----
 In software developing, to improve system's maintainability, reusability, scalability, and flexibility. Programmer may follow few(6) principles to develop a program,it can improve your project develop speed, and reduce the cost of develop and maintain.
 There are six principles of software design, we also called it ***SOLID***:
 - <a href="#single-responsibility-principle-srp">**S**ingle Responsibility Principle (SRP) 单一职责原则</a>
@@ -12,11 +11,14 @@ Other:
 - <a href="#law-of-demeter-lod">Law of Demeter (LoD) 迪米特法则 / The Least Knowledge Principle 最少知识原则</a>
 - <a href="#composite-reuse-principle-crp">Composite Reuse Principle (CRP) 合成复用原则</a>
 
-#### High Cohension and Low Coupling
+---
+
+## High Cohension and Low Coupling
 Before we learn about Software Design Principle and Design Pattern, we should know what is **"High Cohension and Low Coupling"**.
 ***Hight Cohension:*** Means that the element within a module are closely related and work together to execute a well-defined task.
 ***Low Coupling:*** Means that there is minimal interdependence and impact between modules, aiming to enhance system flexibility and maintainability.
 
+---
 
 ## Single Responsibility Principle (SRP)
 Every class, module, or function in a program should have only one responsibilty.
@@ -84,7 +86,7 @@ public class StudentResult {
 ```
 Now we've separated each reponsibility/functionality into a specific class. This would make your program easy to update and maintain. If you need to make changes to the email functionality, you can simply edit the code within the `StudentEmail` class without having to worry about other classes such as `StudentRegister`.
 
-<br>
+---
 
 ## Open/Closed Principle (OCP)
 Definition: Software entities (Class, module, functions) should be open for extension, and closed for modification.
@@ -156,7 +158,7 @@ Dark Theme
 ```
 In this case, when we want to create a new theme called `DarkTheme`, we directly implement the `abstractTheme` class, and we don't modify any existing code.
 
-<br>
+---
 
 ## Liskov Substitution Principle (LSP)
 LSP told us, **if you replace a superclass object with its subclass object,the program will not occur any errors. The reverse is not true, if the program accept a subclass object, its may not able to use the superclass object.** For example, if I like animal means I must like dog; If i love dog, it doesn't means I like animals, because I don't like cat, although it is a animal too.
@@ -358,7 +360,7 @@ Now, we refer back the example above:
 
 In this case, if I using the **Quadrilateral** (Parameter of printInfo method) object, I can use **Square** (or Rectangle) to access it; If I using the **Rectangle** (Parameter of the resize method) object, it is not allowed for the **Square** object.
 
-<br>
+---
 
 ## Interface Segregation Principle (ISP)
 **Clients should not be *forced* to depend upon interfaces that they do not use.**
@@ -477,7 +479,7 @@ public class TommySafetyDoor implements antiTheft,waterProof {//implement the in
 In this case, `JieLimSafetyDoor` and `TommySafetyDoor` implements the neccessary interfaces, so they don't have to force implement the method they don't need.
 
 
-<br>
+---
 
 ## Dependency Inversion Principle (DIP)
 Dependency Inversion Principle consists of two parts:
@@ -659,6 +661,8 @@ Using Kingston RAM...
 ```
 In this case, the members of the Computer class is using **interface instead of a specific implementation class**. This allows the class to remain functional even when switching to a different brand of CPU.
 
+---
+
 ## Law of Demeter (LoD) 
 The **Law of Demeter** is also known as **The Least Knowledge Principle**. In simpler terms, the fundamental concept of LoD can be expressed as **"Talk only to your immediate friends and not to strangers."** Its means that if two software entities do not need to communicate directly, there should be no direct interaction between them; the communication should go through a third-party intermediary. The goal is to reduce the coupling between classes and enhance the modularity and independence of modules.
 
@@ -741,14 +745,36 @@ Artist(Name:Jielim) talking with company(Name:ABC Company)
 ```
 The advantage of Law of Demeter is reduce the coupling between classes, make it more easily to maintain.
 
+---
+
 ## Composite Reuse Principle (CRP)
+The core idea of CRP is **"prefer object composition over class inheritance."** The purpose of this principle is to reduce system coupling, enhance module independence, and promote code reuse.
+
+Usually class reuse is divided into two types: **inheritance reuse and composite reuse:**
+
+Although **inheritance reuse** has the **advantage of simple and ease of implementation**, it also has the following **disadvantages**:
+1. Inheritance reuse destroys the encapsulation of the class. Because inheritance exposes the details of the parent class to the child class.
+2. Subclasses are highly coupled with the parent class. Any change in the implementation of the parent class leads to changes in the implementation of the subclass, which is not favourable for the extension and maintenance of the class.
+
+When using **composite reuse**, an existing object can be incorporated into a new object to make it a part of the new object, and the new object can call the functions of the existing object, which has the following **advantages**:
+1. It maintains the encapsulation of the class. It maintains the encapsulation of the class because the internal details of the component objects are invisible to the new object.
+2. Low coupling between objects. Abstraction can be declared at the member position of the class.
+
+Example: Categories of the Vehicle
+There are different types of cars such as petrol and electric cars, and they come in a variety of colours such as red, white and black. 
+
+**Inheritance Reuse:**
+![InheritanceCarUML](https://www.panziye.com/wp-content/uploads/2022/05/2022053013555418.png)
+As you can see, if we want to create a new type of car called *Ligh-energy Car*, we need to add a new class called `LightEnergyCar` inherit from superclass `Car`, and create few classes such as `RedLightEnergyCar` and `WhiteLightEnergyCar` inherit from parent class `LightEnergyCar`. Moreover, if we add a new color, all type of car should add a new class for this color.
 
 <br>
 
-
+**Composite Reuse:**
+![CompositeCarUML](https://www.panziye.com/wp-content/uploads/2022/05/2022053013570569.png)
+You can observe that we have separated the Car and Color concepts. This separation makes it easy to introduce new car types and colors. For example, if you want to add a new car type, such as `LightEnergyCar`, you can simply insert it directly below the Car superclass without needing to create a new subclass such as `WhiteLightEnergyCar`. The process is the same for adding a new color.
 
 ---
-## References (Where I learn from)
+## References (where did I learn it)
 1. https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english/
 2. https://juejin.cn/post/6844903795017646094
 3. https://stackify.com/solid-design-principles/

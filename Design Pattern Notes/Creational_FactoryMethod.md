@@ -121,10 +121,10 @@ We create a new class called `SimpleCoffeeFactory`, give class `SimpleCoffeeFact
 Concept: Defined a interface that use for create object, let the subclass decide which type of coffee to instantiate.**The factory method delays the instantiation of a product class to its factory subclass.**
 
 Structure:
-- Abstract Factory: Provide the interface to create products, we can access its specific factory to create products.
-- Concrete Factory: Subclasses of the Creator implement the Factory Method to create specific instances of the Product. Each subclass is responsible for instantiating a particular type of Product
-- Abstract Product: Defined the rules of the product, describe the characteristic and functionality of the product.
-- Concrete Product: Implement the specific functionality of the abstract product.
+- **Abstract Factory:** Provide the interface to create products, we can access its specific factory to create products.
+- **Concrete Factory:** Subclasses of the Creator implement the Factory Method to create specific instances of the Product. Each subclass is responsible for instantiating a particular type of Product
+- **Abstract Product:** Defined the rules of the product, describe the characteristic and functionality of the product.
+- **Concrete Product:** Implement the specific functionality of the abstract product. **The relationship between Concrete Product and Concrete Factory is One to One.**
 
 Abstract Factory:
 ```java
@@ -219,4 +219,140 @@ public class Test {
     }
 }
 ```
-In this case, we solve the problem of **Open/Closed Principle**, because if we want create a new coffee type called `MochaCoffee`, we can directly create a new concrete product class called `MochaCoffee` and concrete factory class called `MochaCoffeeFactory` class, and we don't even need to change any existing code such as `Cafe` class. However, the disadvantages of factory method is there are so many class we need to declared.
+In this case, we solve the problem of **Open/Closed Principle**, because if we want to create a new type of coffee called `MochaCoffee`, we can directly create a new concrete product class called `MochaCoffee` and concrete factory class called `MochaCoffeeFactory` class, and **we don't even need to change any existing code** like `Cafe` class. However, the **disadvantages of the factory method** is that there are so many classes we need to declare, which increases the complexity of the system.
+
+---
+<br>
+
+## Abstract Factory
+Suppose our cafe now sells `Coffee` and `Cake` products, and we have `TiramisuCake` and `MatchaCake`, if we continued to use the factory method, we would have too many classes in our system.
+
+Now let's analyse our products, now I have `AmericanoCoffee`, `LatteCoffee`, `TiramisuCake`, and `MatchaCake`. We can categorize them into product categories called `Coffee` and `Cake`, and flavour types called `AmericanFlavour` and `ItalianFlavour`.
+
+Structure:
+- **Abstract Factory:** Provide the interface of create products, it can create many type of product such as `Coffee` and `Cake`.
+- **Concrete Factory:** Implement abstract factory, create the specific type of products.
+- **Abstract Product:** Defined products, describe the features and function of the products.
+- **Concrete Product:** Implement abstract product, instance create by concrete factory, **the relationship between concrete product and concrete factory is Many to One.**
+
+Abstract Product: `Coffee` and `Cake`
+```java
+public abstract class Cake {
+    public abstract void show();
+}
+```
+```java
+public abstract class Coffee {
+
+    String name;
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+Concrete Product: `AmericanoCoffee`, `LatteCoffee`, `MatchaCake`, and `TiramisuCake`.
+```java
+public class AmericanoCoffee extends Coffee {
+    @Override
+    public String getName() {
+        return "Americano Coffee";
+    }
+}
+```
+```java
+public class LatteCoffee extends Coffee {
+    @Override
+    public String getName() {
+        return "Latte Coffee";
+    }
+}
+```
+```java
+public class MatchaCake extends Cake{
+    @Override
+    public void show() {
+        System.out.println("Matcha Cake");
+    }
+}
+```
+```java
+public class TiramisuCake extends Cake{
+    @Override
+    public void show() {
+        System.out.println("Tiramisu Cake!");
+    }
+}
+```
+
+Abstract Factory:
+```java
+public interface FlavourFactory {
+    Coffee createCoffee();
+    Cake createCake();
+}
+```
+
+Concrete Factory:
+```java
+public class ItalianFlavourFactory implements FlavourFactory{
+    public Coffee createCoffee(){
+        return new LatteCoffee();
+    }
+    public Cake createCake(){
+        return new TiramisuCake();
+    }
+}
+```
+```java
+public class AmericanFlavourFactory implements FlavourFactory{
+    public Coffee createCoffee(){
+        return new AmericanoCoffee();
+    }
+    public Cake createCake(){
+        return new MatchaCake();
+    }
+}
+```
+
+Usage:
+```java
+public class Test {
+    public static void main(String[] args) {
+        AmericanFlavourFactory americanFlavourFactory = new AmericanFlavourFactory();
+        Cake cake01 = americanFlavourFactory.createCake();
+        Coffee coffee01 = americanFlavourFactory.createCoffee();
+        cake01.show();
+        System.out.println(coffee01.getName());
+
+        System.out.println("===============");
+
+        ItalianFlavourFactory italianFlavourFactory = new ItalianFlavourFactory();
+        Cake cake02 = italianFlavourFactory.createCake();
+        Coffee coffee02 = italianFlavourFactory.createCoffee();
+        cake02.show();
+        System.out.println(coffee02.getName());
+    }
+}
+```
+```
+Output:
+Matcha Cake
+Americano Coffee
+===============
+Tiramisu Cake!
+Latte Coffee
+```
+
+**The disadvantages of Abstract Factory:**
+If I want to add a new flavour called `MalaysianFlavour`, I can add the concrete factory called `MalaysianFlavourFactory` and the concrete product called `AhHuatFlatWhiteCoffee`. As you can see, when we add a new flavour we only need to add the new class without modifying the existing code.
+
+**The disadvantages of Abstract Factory:**
+If I want to add a new product called `IceCream`, all concrete factory class must modify the code because concrete factory need to add a  interface for create `IceCream` instance.
+
+Based on the above advantages and disadvantages, we need to **analyse whether our product is fixed and flavour is variable before using Abstract Factory.** Another example: There are only two products, laptops and mobile phones, but there are many brands.

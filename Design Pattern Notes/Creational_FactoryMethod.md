@@ -356,3 +356,94 @@ If I want to add a new flavour called `MalaysianFlavour`, I can add the concrete
 If I want to add a new product called `IceCream`, all concrete factory class must modify the code because concrete factory need to add a  interface for create `IceCream` instance.
 
 Based on the above advantages and disadvantages, we need to **analyse whether our product is fixed and flavour is variable before using Abstract Factory.** Another example: There are only two products, laptops and mobile phones, but there are many brands.
+
+## Factory Method with properties
+We can try to emulate the **Spring IoC design pattern** and create a Coffee class by writing the Concrete class path using the properties file.
+
+**My File Structure:**
+java:
+-FactoryMethod_withProperties
+--Coffee.java
+--AmericanoCoffee.java
+--LatteCoffee.java
+--CoffeeFactory.java
+--Test.java
+
+resources:
+-bean.properties (we write the path of the coffee concrete classes in this file)
+
+```java
+public abstract class Coffee {
+
+    String name;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+```java
+public class AmericanoCoffee extends Coffee {
+    @Override
+    public String getName() {
+        return "Americano Coffee";
+    }
+}
+```
+```java
+public class LatteCoffee extends Coffee {
+    @Override
+    public String getName() {
+        return "Latte Coffee";
+    }
+}
+
+```
+Properties file: `bean.properties`
+```properties
+americano=FactoryMethod_withProperties.AmericanoCoffee
+latte=FactoryMethod_withProperties.LatteCoffee
+```
+```java
+public class CoffeeFactory {
+
+    private static HashMap<String,Coffee> coffeeMap = new HashMap<>();
+
+    static {
+        Properties beanProperties = new Properties();
+        InputStream resourceAsStream = CoffeeFactory.class.getClassLoader().getResourceAsStream("bean.properties");
+        try {
+            beanProperties.load(resourceAsStream);
+            Set<Object> keys = beanProperties.keySet();
+            for (Object key : keys){
+                String className = beanProperties.getProperty((String) key);
+                //className: americanoCoffee class path( FactoryMethod_withProperties.AmericanoCoffee )
+                //use reflection to create class
+                Class clazz = Class.forName(className);
+                Coffee coffeeClass = (Coffee)clazz.newInstance();
+                coffeeMap.put((String) key,coffeeClass);//key:value = americano:FactoryMethod_withProperties.AmericanoCoffee class
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Coffee createCoffee(String name){
+        return coffeeMap.get(name);
+    }
+
+}
+```
+Usage:
+```java
+public class Test {
+    public static void main(String[] args) {
+        Coffee coffee = CoffeeFactory.createCoffee("latte");
+        System.out.println(coffee.getName());//Output: Latte Coffee
+    }
+}
+```
+In this case, we read all data from `bean.properties` into the Hash Map variable called `coffeeMap`. We called the `createCoffee(String name)` method and send the string data same with key value in `bean.properties`, so that we can get the concrete class that the path you write in `bean.properties`.

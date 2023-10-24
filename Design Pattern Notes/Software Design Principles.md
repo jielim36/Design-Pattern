@@ -1,5 +1,5 @@
 # Software Design Princles
-In software developing, to improve system's maintainability, reusability, scalability, and flexibility. Programmer may follow few(6) principles to develop a program,it can improve your project develop speed, and reduce the cost of develop and maintain.
+In software developing, to improve system's maintainability, reusability, scalability, and flexibility. Programmer may follow principles to develop a program,it can improve your project develop speed, and reduce the cost of develop and maintain.
 There are six principles of software design, we also called it ***SOLID***:
 - <a href="#single-responsibility-principle-srp">**S**ingle Responsibility Principle (SRP) 单一职责原则</a>
 - <a href="#openclosed-principle-ocp">**O**pen/Closed Principle (OCP) 开闭原则</a>
@@ -96,7 +96,7 @@ Now we've separated each reponsibility/functionality into a specific class. This
 
 ## Open/Closed Principle (OCP)
 Definition: Software entities (Class, module, functions) should be open for extension, and closed for modification.
-When software needs to change (for updates and maintenance), it is advisable to achieve the goals through extension rather than modifying the existing code. Therefore, we recommend building a framework through abstraction and implementing details through extensions. When our software requires updates, simply extend a new implementation class based on the requirements of the abstract class.
+**When software needs to change (for updates and maintenance), it is advisable to achieve the goals through extension rather than modifying the existing code. Therefore, we recommend building a framework through abstraction and implementing details through extensions. When our software requires updates, simply extend a new implementation class based on the requirements of the abstract class.
 
 ```java
 public abstract class AbstractTheme {

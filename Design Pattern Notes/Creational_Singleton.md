@@ -15,7 +15,6 @@ Step:
 3. create a static method provide the way for get instance of this class in the outside
 ```java
 public class EagerSingleton_One {
-
     //Step 2.
     private static EagerSingleton_One instance = new EagerSingleton_One();
 
@@ -44,7 +43,6 @@ Step:
 4. (Same) create a static method to return your instance
 ```java
 public class EagerSingleton_Two {
-
     private static EagerSingleton_Two instance;//not assign a value, so it is null
 
     static {
@@ -58,7 +56,6 @@ public class EagerSingleton_Two {
     public static EagerSingleton_Two getInstance(){
         return instance;
     }
-
 }
 ```
 
@@ -100,7 +97,6 @@ It is very **similar** with Eager Singleton，the difference is the `getInstance
 
 ```java
 public class LazySingleton {
-
     private static LazySingleton instance;
 
     private LazySingleton(){}
@@ -158,9 +154,7 @@ public static LazySingleton getInstance() {
 ##### Other ways to implement Lazy Singleton with Thread Safety
 ```java
 public class LazySingleton_Two {
-
     private LazySingleton_Two(){}
-
     //static inner class
     private static class SingletonHolder{
         private static final LazySingleton_Two INSTANCE = new LazySingleton_Two();
